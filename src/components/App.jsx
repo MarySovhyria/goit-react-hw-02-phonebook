@@ -1,6 +1,5 @@
 import { Component } from 'react';
 import ContactForm from './phoneBook/contactForm';
-import ContactItem from './phoneBook/contactItem';
 import ContactList from './phoneBook/contactList';
 import Filter from './phoneBook/filter';
 
