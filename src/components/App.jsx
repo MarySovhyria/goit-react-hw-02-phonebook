@@ -15,9 +15,23 @@ class App extends Component {
   };
 
   handleAddNewContact = newContact => {
+    if(!newContact) {
+       alert('Please add contact');
+       return
+    }
+    const { contacts } = this.state;
+    const contactsName = contacts.map(contact => contact.name);
+
+      const matchName = contactsName.some(
+      contactName => newContact.name.toLowerCase() === contactName.toLowerCase()
+    );
+    if (matchName) {
+      return alert(`${newContact.name} is already in contacts`);
+    }
     this.setState(prevState => ({
       contacts: [...prevState.contacts, newContact],
     }));
+    
   };
 
   changeFilter = event => {
@@ -28,9 +42,16 @@ class App extends Component {
     const { contacts, filter } = this.state;
     const normalizeFilter = filter.toLowerCase();
 
-    return contacts.filter(({ name }) =>
+
+    const filteredContacts = contacts.filter(({ name }) =>
       name.toLowerCase().includes(normalizeFilter)
     );
+
+    if (filteredContacts.length === 0) {
+      filteredContacts.push({ id: 'not-found', name: 'Not found name' });
+    }
+
+    return filteredContacts;
   };
 
   handleDeleteContact = contactId => {
