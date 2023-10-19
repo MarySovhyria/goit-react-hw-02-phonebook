@@ -5,7 +5,7 @@ import Filter from './phoneBook/filter';
 
 class App extends Component {
   state = {
-    contacts: JSON.parse(localStorage.getItem('contacts')),
+    contacts: JSON.parse(localStorage.getItem('contacts')) || [], // Provide an empty array as the default value
     filter: '',
   };
 
