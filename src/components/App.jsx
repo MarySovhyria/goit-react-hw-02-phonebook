@@ -5,9 +5,25 @@ import Filter from './phoneBook/filter';
 
 class App extends Component {
   state = {
-    contacts: JSON.parse(localStorage.getItem('contacts')) || [], // Provide an empty array as the default value
+    contacts: [],
     filter: '',
   };
+
+  componentDidMount() {
+    let contactsLS = [];
+    if (localStorage.getItem('contacts')){
+      contactsLS = JSON.parse(localStorage.getItem('contacts'));
+    }
+    if (contactsLS.length !== 0){
+      this.setState({contacts: [...contactsLS]})
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.contacts !== this.state.contacts) { 
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+     
+    }
 
   handleAddNewContact = newContact => {
     const { contacts } = this.state;
@@ -47,9 +63,7 @@ class App extends Component {
     }));
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-  }
+  
 
   render() {
     const { contacts, filter } = this.state;
