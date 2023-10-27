@@ -1,18 +1,22 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import { nanoid } from 'nanoid';
 
 
-class ContactForm extends Component {
-  state = { name: '', number: '' };
+const  ContactForm = () => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-  handleChange = event => {
+ const  handleChange = event => {
     const { name, value } = event.currentTarget;
 
-    this.setState({ [name]: value });
+    if (name === 'name') {
+      setName(value)
+    } else if(name === 'number') {
+      setNumber(value)
+    }
   };
 
-  handleSubmit = event => {
-    const { name, number } = this.state;
+  const handleSubmit = event => {
     event.preventDefault();
 
     const newContact = {
@@ -21,19 +25,17 @@ class ContactForm extends Component {
       number,
     };
 
-    this.props.onSubmit(newContact);
-    this.reset();
+    onSubmit(newContact);
+    reset();
   };
 
-  reset = () => {
-    this.setState({ name: '', number: '' });
+  const reset = () => {
+    setName('');
+    setNumber('');
   };
-
-  render() {
-    const { name, number } = this.state;
 
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <label>
           Name
           <input
@@ -41,7 +43,7 @@ class ContactForm extends Component {
             name="name"
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
-            onChange={this.handleChange}
+            onChange={handleChange}
             value={name}
             autoFocus
           />
@@ -54,7 +56,7 @@ class ContactForm extends Component {
             name="number"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
-            onChange={this.handleChange}
+            onChange={handleChange}
             value={number}
           />
         </label>
@@ -64,7 +66,6 @@ class ContactForm extends Component {
         </button>
       </form>
     );
-  }
-};
+  };
 
 export default ContactForm;
