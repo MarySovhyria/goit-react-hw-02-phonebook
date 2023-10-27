@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { nanoid } from 'nanoid';
 
 
-const  ContactForm = () => {
+const  ContactForm = ({onSubmit}) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 

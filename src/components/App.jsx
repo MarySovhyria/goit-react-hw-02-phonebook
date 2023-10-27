@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ContactForm from './phoneBook/contactForm';
 import ContactList from './phoneBook/contactList';
 import Filter from './phoneBook/filter';
 
 const App = () => {
-const [contacts, setContacts] = useState([]);
-const [filter, setFilter] = useState('');
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState('');
 
   useEffect(() => {
     const contactsLS = JSON.parse(localStorage.getItem('contacts')) || [];
@@ -14,21 +14,19 @@ const [filter, setFilter] = useState('');
     }
   }, []);
 
-    useEffect(() => {
-      localStorage.setItem('contacts', JSON.stringify(contacts))
-    }, [contacts])
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
   const handleAddNewContact = newContact => {
-  
     const matchName = contacts.some(
       contact => newContact.name.toLowerCase() === contact.name.toLowerCase()
     );
-  
+
     if (matchName) {
       return alert(`${newContact.name} is already in contacts`);
     }
-    setContacts(prevState => ([...prevState.contacts, newContact]));
-    
+    setContacts(prevState => ([...prevState, newContact]));
   };
 
   const changeFilter = event => {
@@ -46,34 +44,30 @@ const [filter, setFilter] = useState('');
   };
 
   const handleDeleteContact = contactId => {
-    setContacts(prevState => (prevState.contacts.filter(({ id }) => id !== contactId)));
+    setContacts(prevState => prevState.filter(({ id }) => id !== contactId));
   };
 
+  return (
+    <div>
+      <h1>Phonebook</h1>
+      <ContactForm onSubmit={handleAddNewContact} />
 
-    return (
-      <div>
-        <h1>Phonebook</h1>
-        <ContactForm
-          onSubmit={handleAddNewContact}
-    
-        />
-
-        {contacts.length > 0 && (
-          <div>
-            <h2>Contacts</h2>
-            <Filter value={filter} onChange={changeFilter} />
-            {visibleContacts.length > 0 ? (
-              <ContactList
-                visibleContacts={visibleContacts}
-                onDeleteContact={handleDeleteContact}
-              />
-            ) : (
-              <p>No contacts match the filter.</p>
-            )}
-          </div>
-        )}
-      </div>
-    );
-  }
+      {contacts.length > 0 && (
+        <div>
+          <h2>Contacts</h2>
+          <Filter value={filter} onChange={changeFilter} />
+          {getVisibleContacts().length > 0 ? (
+            <ContactList
+              visibleContacts={getVisibleContacts()}
+              onDeleteContact={handleDeleteContact}
+            />
+          ) : (
+            <p>No contacts match the filter.</p>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default App;
