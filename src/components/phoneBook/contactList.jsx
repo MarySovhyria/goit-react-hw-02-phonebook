@@ -1,7 +1,6 @@
 import { getContacts } from 'redux/Store/Selectors/selctors';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { deleteContacts } from 'redux/Store/Slices/ContactsSlice';
-import { filterReducer } from 'redux/Store/Slices/FilterSlice';
 import { useDispatch } from 'react-redux';
 import { getFilters } from 'redux/Store/Selectors/selctors';
 
