@@ -7,13 +7,14 @@ import { getFilters } from 'redux/Store/Selectors/selctors';
 const ContactList = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(getContacts);
-  const filter = useSelector(getFilters);
+  const filtered = useSelector(getFilters);
 
-  const normalizeFilter = filter.toLowerCase();
+  const normalizeFilter = filtered.toLowerCase();
 
   const filteredContacts = contacts.filter(({ name }) =>
     name.toLowerCase().includes(normalizeFilter)
   );
+
 
   return (
     <ul>

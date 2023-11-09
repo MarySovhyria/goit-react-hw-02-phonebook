@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContacts } from '../../redux/Store/Slices/ContactsSlice';
+import { addContacts } from '../redux/Store/Slices/ContactsSlice';
 import { getContacts } from 'redux/Store/Selectors/selctors';
 
 
@@ -9,20 +9,22 @@ const ContactForm = ({ onSubmit }) => {
   const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
 
-  const [contactName, setContactName] = useState('');
-  const [contactNumber, setContactNumber] = useState('');
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
   const handleSubmit = event => {
    event.preventDefault();
-     if (contacts.some(contact => contact.name === contactName)) {
-    window.alert(`${contactName} is already in your contacts`);
+     if (contacts.some(contact => contact.name === name)) {
+    window.alert(`${name} is already in your contacts`);
     return;
   }
    dispatch(addContacts({
      id: nanoid(),
-     name: contactName,
-     number: contactNumber
+     name,
+     number
    }))
+    setName('');
+    setNumber('')
   };
 
   const handleChange = e => {
@@ -30,10 +32,10 @@ const ContactForm = ({ onSubmit }) => {
 
     switch (name) {
       case 'name':
-        setContactName(value);
+        setName(value);
         break;
       case 'number':
-        setContactNumber(value);
+        setNumber(value);
         break;
 
       default:
@@ -51,7 +53,7 @@ const ContactForm = ({ onSubmit }) => {
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
             onChange={handleChange}
-            value={contactName}
+            value={name}
             autoFocus
           />
         </label>
@@ -64,7 +66,7 @@ const ContactForm = ({ onSubmit }) => {
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
             onChange={handleChange}
-            value={contactNumber}
+            value={number}
           />
         </label>
 

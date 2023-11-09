@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
-import ContactForm from './phoneBook/contactForm';
-import ContactList from './phoneBook/contactList';
-import Filter from './phoneBook/filter';
+import ContactForm from './contactForm';
+import ContactList from './contactList';
+import Filter from './filter';
 import { getContacts } from 'redux/Store/Selectors/selctors';
 
 const App = () => {
