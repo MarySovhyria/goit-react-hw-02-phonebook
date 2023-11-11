@@ -1,27 +1,35 @@
-import { getContacts } from 'redux/Store/Selectors/selctors';
+import { selectError, selectLoading, selectFilteredContacts } from 'redux/Store/Selectors/selctors';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
-import { deleteContacts } from 'redux/Store/Slices/ContactsSlice';
+import { deleteContacts } from 'redux/Store/operation';
 import { useDispatch } from 'react-redux';
-import { getFilters } from 'redux/Store/Selectors/selctors';
+import { fetchContacts } from 'redux/Store/operation';
+import { useEffect } from 'react';
+
 
 const ContactList = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
-  const filtered = useSelector(getFilters);
+  const filteredContacts = useSelector(selectFilteredContacts)
+  const error = useSelector(selectError);
+  const isLoading = useSelector(selectLoading)
 
-  const normalizeFilter = filtered.toLowerCase();
-
-  const filteredContacts = contacts.filter(({ name }) =>
-    name.toLowerCase().includes(normalizeFilter)
-  );
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
 
+  
   return (
     <ul>
-      {filteredContacts.map(({ id, name, number }) => (
-        <li key={id}>
+      {isLoading && !error ? (
+        <p>Loading ...</p>
+      ) : filteredContacts.length === 0 && !error ? (
+        <p>Your phonebook is empty</p>
+        ) : (
+            filteredContacts.map(({ name, phone, id }) => (
+          <li key={id}>
           <span>{name}:</span>
-          <span>{number}</span>
+          <span>{phone}</span>
+                
           <button
             type="button"
             onClick={() => dispatch(deleteContacts(id))}
@@ -29,7 +37,10 @@ const ContactList = () => {
             Delete
           </button>
         </li>
-      ))}
+      )))
+          
+      }
+      
     </ul>
   );
 };
